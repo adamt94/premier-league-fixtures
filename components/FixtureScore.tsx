@@ -1,5 +1,5 @@
-import { View, Text, Image } from "react-native";
-import { formatDate, getHoursMins } from "../util/dateFormat";
+import { View, Text } from "react-native";
+import { getHoursMins } from "../util/dateFormat";
 
 type FixtureProps = {
   date: string;
@@ -13,11 +13,15 @@ export default function FixtureScore({
   awayScore,
 }: FixtureProps) {
   return (
-    <View className="flex flex-row items-center justify-center w-16 bg-primaryContainer h-7 rounded-full">
+    <View
+      className={`flex flex-row items-center justify-center bg-primaryContainerDark dark:bg-primaryContainerDark w-16 h-7 rounded-full`}
+    >
       {homeScore === null || awayScore === null ? (
-        <Text className="text-onPrimaryContainer"> {getHoursMins(date)} </Text>
+        <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+          {getHoursMins(date)}{" "}
+        </Text>
       ) : (
-        <Text className="text-onPrimaryContainer">
+        <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
           {homeScore} - {awayScore}
         </Text>
       )}

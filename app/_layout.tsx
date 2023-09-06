@@ -7,6 +7,7 @@ import { StatusBar, View, useColorScheme } from "react-native";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FixturesScreen from "./fixture";
+import { getColorTheme } from "../util/getColorTheme";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,10 +51,10 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <View className=" bg-surfaceVariant text-onSurfaceVariant">
+      <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
         <SafeAreaView>
           <StatusBar
-            barStyle={colorScheme === "dark" ? "dark-content" : "light-content"}
+            barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
           />
           <FixturesScreen />
         </SafeAreaView>

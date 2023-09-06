@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Dimensions, Text, View } from "react-native";
+import { Button, Dimensions, Text, View, useColorScheme } from "react-native";
 import Fixture from "./Fixture";
-import useGameWeeks from "../util/useGameWeeks";
 import { findClosestDateIndex, isSameDay } from "../util/dateFormat";
 import { ScrollView } from "react-native-gesture-handler";
 import useAllGameWeeks from "../util/useAllGameWeeks";
@@ -15,6 +14,7 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
   const { width, height } = Dimensions.get("window");
   const { fixturesForWeeks, totalGameweeks } = useAllGameWeeks(fixtures);
   const carouselRef: any = useRef(null);
+  const colorScheme = useColorScheme();
   useEffect(() => {
     const gameWeekDates: string[] = fixturesForWeeks.map((week) => {
       return week[0].fixture.date;
@@ -45,7 +45,7 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
           return (
             <>
               <View key={index} className="flex flex-col items-center mb-16">
-                <Text className="text-onPrimaryFixed text-xl pt-6">
+                <Text className="text-onSurfaceVariant dark:text-onSurfaceVariantDark text-lg pt-6">
                   Gameweek {index + 1}
                 </Text>
 

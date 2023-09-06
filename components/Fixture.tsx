@@ -1,4 +1,4 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, useColorScheme } from "react-native";
 import { formatDate, getHoursMins } from "../util/dateFormat";
 import FixtureScore from "./FixtureScore";
 
@@ -38,13 +38,13 @@ export default function Fixture({
   return (
     <View className="flex flex-col items-center justify-center">
       {showDate && (
-        <Text className="text-onPrimaryFixedVariant text-base pt-5">
+        <Text className="text-outline dark:text-outlineDark text-base pt-5">
           {formatDate(date)}
         </Text>
       )}
       <View className="flex flex-row justify-start gap-1 py-2  w-full">
         <View className="flex flex-row flex-1 justify-end gap-1 ">
-          <Text className="text-onSurface text-right">
+          <Text className="text-onSurface dark:text-onSurfaceDark text-right">
             {abreviateTeamName(homeTeam)}
           </Text>
           <Image
@@ -64,7 +64,9 @@ export default function Fixture({
             source={{ uri: awayTeamLogo }}
             style={{ width: 25, height: 25 }}
           />
-          <Text className="text-onSurface">{abreviateTeamName(awayTeam)}</Text>
+          <Text className="text-onSurface dark:text-onSurfaceDark ">
+            {abreviateTeamName(awayTeam)}
+          </Text>
         </View>
       </View>
     </View>
