@@ -13,14 +13,13 @@ const useAllGameWeeks = (fixtures: Fixture[]): GameWeek => {
 
   useEffect(() => {
     const sortedFixtures = fixtures.sort(
-      (a, b) =>
-        new Date(a.fixture.date).getTime() - new Date(b.fixture.date).getTime()
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
     );
 
     const gameWeeks: Fixture[][] = [];
 
     sortedFixtures.forEach((fixture) => {
-      const gameWeekIndex = getGameWeek(fixture.fixture.date);
+      const gameWeekIndex = getGameWeek(fixture.date);
       if (!gameWeeks[gameWeekIndex]) {
         gameWeeks[gameWeekIndex] = [];
       }

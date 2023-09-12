@@ -7,7 +7,7 @@ import { StatusBar, View, useColorScheme } from "react-native";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FixturesScreen from "./fixture";
-import { getColorTheme } from "../util/getColorTheme";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -48,17 +48,21 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  const queryClient = new QueryClient();
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
-        <SafeAreaView>
-          <StatusBar
-            barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
-          />
-          <FixturesScreen />
-        </SafeAreaView>
-      </View>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
+          <SafeAreaView>
+            <StatusBar
+              barStyle={
+                colorScheme === "dark" ? "light-content" : "dark-content"
+              }
+            />
+            <FixturesScreen />
+          </SafeAreaView>
+        </View>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }

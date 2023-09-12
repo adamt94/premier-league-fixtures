@@ -14,10 +14,10 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
   const { width, height } = Dimensions.get("window");
   const { fixturesForWeeks, totalGameweeks } = useAllGameWeeks(fixtures);
   const carouselRef: any = useRef(null);
-  const colorScheme = useColorScheme();
+
   useEffect(() => {
     const gameWeekDates: string[] = fixturesForWeeks.map((week) => {
-      return week[0].fixture.date;
+      return week[0].date;
     });
     const currentWeekIndex = findClosestDateIndex(gameWeekDates);
     if (currentWeekIndex !== -1 && carouselRef.current) {
@@ -35,6 +35,9 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
         vertical={false}
         width={width}
         height={height}
+        panGestureHandlerProps={{
+          activeOffsetX: [-10, 10],
+        }}
         windowSize={5}
         defaultIndex={0}
         autoPlay={false}
@@ -49,34 +52,32 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
                   Gameweek {index + 1}
                 </Text>
 
-                <ScrollView className="w-full">
-                  {fixturesForWeeks[index].map((fixture, findex) => {
-                    const previousFixture =
-                      findex > 0
-                        ? fixturesForWeeks[index][findex - 1]
-                        : undefined;
-                    const sameDay =
-                      previousFixture &&
-                      isSameDay(
-                        fixture.fixture.date,
-                        previousFixture.fixture.date
-                      );
+                <View className="w-full">
+                  {fixturesForWeeks[index]?.length &&
+                    fixturesForWeeks[index].map((fixture, findex) => {
+                      const previousFixture =
+                        findex > 0
+                          ? fixturesForWeeks[index][findex - 1]
+                          : undefined;
+                      const sameDay =
+                        previousFixture &&
+                        isSameDay(fixture.date, previousFixture.date);
 
-                    return (
-                      <Fixture
-                        key={fixture.fixture.id}
-                        date={fixture.fixture.date}
-                        showDate={!sameDay}
-                        homeTeam={fixture.teams.home.name}
-                        awayTeam={fixture.teams.away.name}
-                        homeScore={fixture.goals.home}
-                        awayScore={fixture.goals.away}
-                        homeTeamLogo={fixture.teams.home.logo}
-                        awayTeamLogo={fixture.teams.away.logo}
-                      />
-                    );
-                  })}
-                </ScrollView>
+                      return (
+                        <Fixture
+                          key={findex}
+                          date={fixture.date}
+                          showDate={!sameDay}
+                          homeTeam={fixture.homeTeam}
+                          awayTeam={fixture.awayTeam}
+                          homeScore={fixture.homeScore}
+                          awayScore={fixture.awayScore}
+                          homeTeamLogo={fixture.homeTeamLogo}
+                          awayTeamLogo={fixture.awayTeamLogo}
+                        />
+                      );
+                    })}
+                </View>
               </View>
             </>
           );

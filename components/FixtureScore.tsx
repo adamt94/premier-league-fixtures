@@ -14,7 +14,7 @@ export default function FixtureScore({
 }: FixtureProps) {
   return (
     <View
-      className={`flex flex-row items-center justify-center bg-primaryContainerDark dark:bg-primaryContainerDark w-16 h-7 rounded-full`}
+      className={`flex flex-row items-center justify-center bg-primaryContainer dark:bg-primaryContainerDark w-16 h-7 rounded-full`}
     >
       {homeScore === null || awayScore === null ? (
         <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
