@@ -8,9 +8,8 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/images/ic_launcher_foreground.png",
+      "backgroundColor": "#46468D"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -20,9 +19,11 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/ic_launcher_foreground.png",
+        "monochromeImage": "./assets/images/ic_launcher_monochrome.png",
+        "backgroundColor": "#46468D"
+      },
+      "package": "com.adamtdev.premierleaguefixtures"
     },
     "web": {
       "bundler": "metro",
@@ -34,6 +35,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "170104c5-b559-4cfd-8cc1-0019da5f3c72"
+      }
     }
   }
 }
