@@ -3,8 +3,11 @@ import { GameWeek } from "../components/GameWeek";
 import { View } from "../components/Themed";
 import { useFetch } from "./hooks/usefetch";
 import { Text, RefreshControl, ScrollView } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import AsyncStorage, {
+  useAsyncStorage,
+} from "@react-native-async-storage/async-storage";
 
 const mapApiFixtureToFixture = (apiFixture: ApiFixture): Fixture[] => {
   // conver apifixture attributes to fixture attributes
@@ -29,23 +32,35 @@ const fetchFixturesSortByDate = () => {
     .then((data) => data as ApiFixture);
 };
 
-export default function FixturesScreen() {
+export default function FixturesScreen({
+  cachedFixtures,
+}: {
+  cachedFixtures?: ApiFixture;
+}) {
+  const { setItem } = useAsyncStorage("@fixtures");
   const { isLoading, isError, data, error, isRefetching, refetch } =
     useQuery<ApiFixture>({
       queryKey: ["fixtures"],
       queryFn: fetchFixturesSortByDate,
     });
 
-  const fixtures = data ? mapApiFixtureToFixture(data) : [];
+  useEffect(() => {
+    if (data) {
+      setItem(JSON.stringify(data));
+    }
+  }, [data]);
 
-  if (isLoading) {
+  if (!cachedFixtures && isLoading) {
     return (
-      <View className="flex bg-surface h-full flex-col items-center justify-center">
+      <View className="flex bg-surface dark:bg-surfaceDark h-full flex-col items-center justify-center">
         {<ActivityIndicator size="large" />}
       </View>
     );
   }
 
+  const fixtures = data
+    ? mapApiFixtureToFixture(data)
+    : mapApiFixtureToFixture(cachedFixtures!);
   return (
     <>
       <ScrollView
@@ -54,7 +69,7 @@ export default function FixturesScreen() {
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
         }
       >
-        {data && <GameWeek fixtures={fixtures} />}
+        <GameWeek fixtures={fixtures} />
       </ScrollView>
     </>
   );

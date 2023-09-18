@@ -49,6 +49,7 @@ export const isSameDay = (
   );
 };
 
+
 export const getHoursMins = (dateString: string): string => {
   const date = new Date(dateString);
   const hours = date.getHours().toString().padStart(2, "0");
@@ -56,34 +57,27 @@ export const getHoursMins = (dateString: string): string => {
   return `${hours}:${minutes}`;
 };
 
+const stripTimeFromDate = (date: Date) => {
+  // Create a new date with the same year, month, and day, but with the time set to midnight.
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
+
 export const findClosestDateIndex = (dateStrings: string[]): number => {
   // Convert date strings to Date objects
-  const dates: Date[] = dateStrings.map((dateString) => new Date(dateString));
+  const dates: Date[] = dateStrings.map((dateString) =>
+    stripTimeFromDate(new Date(dateString))
+  );
   // Get the current date
   const currentDate: Date = new Date();
 
-  // Initialize variables to store the closest date index and time difference
-  let closestDateIndex: number = -1;
-  let minTimeDifference: number = Infinity;
-
   // Loop through the dates array
   for (let i = 0; i < dates.length; i++) {
-    // Calculate the time difference in milliseconds
-    const timeDifference: number = dates[i].getTime() - currentDate.getTime();
-
-    // Check if the date is in the past but closer than the previous closest date
-    if (timeDifference >= 0 && timeDifference < minTimeDifference) {
-      closestDateIndex = i;
-      minTimeDifference = timeDifference;
+    if (dates[i] >= currentDate) {
+      return i;
     }
   }
 
-  // If closestDateIndex is still -1, set it to the index of the last date in the array
-  if (closestDateIndex === -1) {
-    closestDateIndex = dates.length - 1;
-  }
-
-  return closestDateIndex;
+  return dates.length - 1;
 };
 
 export const getGameWeek = (inputDate: string): number => {
