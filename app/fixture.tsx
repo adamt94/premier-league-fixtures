@@ -64,6 +64,7 @@ export default function FixturesScreen({
   return (
     <>
       <ScrollView
+        removeClippedSubviews={true}
         contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={refetch} />

@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Dimensions, Text, View, useColorScheme } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Dimensions, Text, View } from "react-native";
 import Fixture from "./Fixture";
 import { findClosestDateIndex, isSameDay } from "../util/dateFormat";
-import { ScrollView } from "react-native-gesture-handler";
 import useAllGameWeeks from "../util/useAllGameWeeks";
 import Carousel from "react-native-reanimated-carousel";
 
