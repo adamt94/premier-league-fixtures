@@ -62,25 +62,20 @@ const stripTimeFromDate = (date: Date) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
-export const findClosestDateIndex = (dateStrings: string[]): number => {
-  // Convert date strings to Date objects
+export const findCurrentGameWeek = (dateStrings: string[]): number => {
   const dates: Date[] = dateStrings.map((dateString) =>
     stripTimeFromDate(new Date(dateString))
   );
-  // Get the current date
   const currentDate: Date = new Date();
-
-  // Loop through the dates array
   for (let i = 0; i < dates.length; i++) {
     if (dates[i] >= currentDate) {
-      return i;
+      return i == 0 ? 0 : i - 1;
     }
   }
-
-  return dates.length - 1;
+  return dates.length > 0 ? dates.length - 1 : 0;
 };
 
-export const getGameWeek = (inputDate: string): number => {
+export const getFixtureGameWeekIndex = (inputDate: string): number => {
   const parsedInputDate = new Date(inputDate);
 
   // Check if the input date is before the first date in the array

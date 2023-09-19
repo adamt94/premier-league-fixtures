@@ -63,15 +63,7 @@ export default function FixturesScreen({
     : mapApiFixtureToFixture(cachedFixtures!);
   return (
     <>
-      <ScrollView
-        removeClippedSubviews={true}
-        contentContainerStyle={{ flexGrow: 1 }}
-        refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-        }
-      >
-        <GameWeek fixtures={fixtures} />
-      </ScrollView>
+      <GameWeek fixtures={fixtures} />
     </>
   );
 }
