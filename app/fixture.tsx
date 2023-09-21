@@ -62,8 +62,13 @@ export default function FixturesScreen({
     ? mapApiFixtureToFixture(data)
     : mapApiFixtureToFixture(cachedFixtures!);
   return (
-    <>
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      refreshControl={
+        <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+      }
+    >
       <GameWeek fixtures={fixtures} />
-    </>
+    </ScrollView>
   );
 }
