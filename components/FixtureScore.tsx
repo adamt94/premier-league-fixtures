@@ -1,30 +1,35 @@
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { getHoursMins } from "../util/dateFormat";
 
 type FixtureProps = {
-  date: string;
+  date: number;
   homeScore: number | null;
   awayScore: number | null;
+  showScore?: boolean;
 };
 
 export default function FixtureScore({
   date,
   homeScore,
   awayScore,
+  showScore = false,
 }: FixtureProps) {
   return (
     <View
       className={`flex flex-row items-center justify-center bg-primaryContainer dark:bg-primaryContainerDark w-16 h-7 rounded-full`}
     >
-      {homeScore === null || awayScore === null ? (
-        <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
-          {getHoursMins(date)}{" "}
-        </Text>
-      ) : (
-        <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
-          {homeScore} - {awayScore}
-        </Text>
-      )}
+      {showScore
+        ? (
+          <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+            {homeScore} - {awayScore}
+          </Text>
+        )
+        : (
+          <Text className="text-onPrimaryContainer dark:text-onPrimaryContainerDark">
+            {getHoursMins(date)}
+            {" "}
+          </Text>
+        )}
     </View>
   );
 }

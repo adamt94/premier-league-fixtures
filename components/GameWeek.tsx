@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { Dimensions, Text, View } from "react-native";
-import Fixture from "./Fixture";
-import { isSameDay } from "../util/dateFormat";
+import { formatDate, isSameDay } from "../util/dateFormat";
 import useAllGameWeeks from "../util/useAllGameWeeks";
 import Carousel from "react-native-reanimated-carousel";
+import { Fixture as FixtureType } from "../api/types";
+import Fixture from "./Fixture";
 
 type GameWeekProps = {
-  fixtures: Fixture[];
+  fixtures: FixtureType[];
 };
 
 export const GameWeek = ({ fixtures }: GameWeekProps) => {
@@ -15,10 +16,14 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
     useAllGameWeeks(fixtures);
   const carouselRef: any = useRef(null);
 
-  if (totalGameweeks === 0 || currentGameWeek === -1) {
+  if (
+    totalGameweeks === 0 ||
+    currentGameWeek === -1 ||
+    !fixturesByGameWeeks ||
+    fixturesByGameWeeks.size === 0
+  ) {
     return null;
   }
-
   return (
     <Carousel
       ref={carouselRef}
@@ -44,30 +49,37 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
               </Text>
 
               <View className="w-full">
-                {fixturesByGameWeeks[index]?.length &&
-                  fixturesByGameWeeks[index].map((fixture, findex) => {
-                    const previousFixture =
-                      findex > 0
-                        ? fixturesByGameWeeks[index][findex - 1]
-                        : undefined;
-                    const sameDay =
-                      previousFixture &&
-                      isSameDay(fixture.date, previousFixture.date);
+                {fixturesByGameWeeks.get(index + 1).map((item, gindex) => {
+                  const previousFixture = gindex > 0
+                    ? fixturesByGameWeeks.get(index + 1)
+                    : null;
+                  const sameDay = Boolean(
+                    previousFixture &&
+                      isSameDay(
+                        previousFixture[gindex - 1].kickoff.millis,
+                        item.kickoff.millis,
+                      ),
+                  );
 
-                    return (
-                      <Fixture
-                        key={findex}
-                        date={fixture.date}
-                        showDate={!sameDay}
-                        homeTeam={fixture.homeTeam}
-                        awayTeam={fixture.awayTeam}
-                        homeScore={fixture.homeScore}
-                        awayScore={fixture.awayScore}
-                        homeTeamLogo={fixture.homeTeamLogo}
-                        awayTeamLogo={fixture.awayTeamLogo}
-                      />
-                    );
-                  })}
+                  return (
+                    <Fixture
+                      key={gindex}
+                      date={item.kickoff.millis}
+                      showDate={!sameDay}
+                      showScore={item.status !== "U"}
+                      homeTeam={item.teams[0].team.shortName}
+                      awayTeam={item.teams[1].team.shortName}
+                      homeScore={item.teams[0].score || 0}
+                      awayScore={item.teams[1].score || 0}
+                      homeTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
+                        item.teams[0].team.altIds.opta
+                      }.png`}
+                      awayTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
+                        item.teams[1].team.altIds.opta
+                      }.png`}
+                    />
+                  );
+                })}
               </View>
             </View>
           </>

@@ -1,9 +1,9 @@
-import { View, Text, Image, useColorScheme } from "react-native";
+import { Image, Text, useColorScheme, View } from "react-native";
 import { formatDate, getHoursMins } from "../util/dateFormat";
 import FixtureScore from "./FixtureScore";
 
 type FixtureProps = {
-  date: string;
+  date: number;
   showDate: boolean;
   homeTeam: string;
   awayTeam: string;
@@ -11,11 +11,13 @@ type FixtureProps = {
   awayScore: number | null;
   homeTeamLogo: string;
   awayTeamLogo: string;
+  showScore: boolean;
 };
 
 export default function Fixture({
   date,
   showDate = true,
+  showScore = false,
   homeTeam,
   awayTeam,
   homeScore,
@@ -23,18 +25,13 @@ export default function Fixture({
   homeTeamLogo,
   awayTeamLogo,
 }: FixtureProps) {
-  const abreviateTeamName = (teamName: string) => {
-    if (teamName === "Manchester United") {
-      return "Man United";
+  const abrvName = (name: string) => {
+    if (name === "Tottenham Hotspur") {
+      return "Tottenham";
     }
-    if (teamName === "Manchester City") {
-      return "Man City";
-    }
-    if (teamName === "Nottingham Forest") {
-      return "Nottm Forest";
-    }
-    return teamName;
+    return name;
   };
+
   return (
     <View className="flex flex-col items-center justify-center">
       {showDate && (
@@ -45,7 +42,7 @@ export default function Fixture({
       <View className="flex flex-row justify-start gap-1 py-2  w-full">
         <View className="flex flex-row flex-1 justify-end gap-1 ">
           <Text className="text-onSurface dark:text-onSurfaceDark text-right">
-            {abreviateTeamName(homeTeam)}
+            {abrvName(homeTeam)}
           </Text>
           <Image
             source={{ uri: homeTeamLogo }}
@@ -55,6 +52,7 @@ export default function Fixture({
         <View className="flex justify-center">
           <FixtureScore
             date={date}
+            showScore={showScore}
             homeScore={homeScore}
             awayScore={awayScore}
           />
@@ -65,7 +63,7 @@ export default function Fixture({
             style={{ width: 25, height: 25 }}
           />
           <Text className="text-onSurface dark:text-onSurfaceDark ">
-            {abreviateTeamName(awayTeam)}
+            {abrvName(awayTeam)}
           </Text>
         </View>
       </View>

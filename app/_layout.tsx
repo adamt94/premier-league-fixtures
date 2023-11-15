@@ -1,22 +1,18 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect, useState } from "react";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 import {
-  StatusBar,
-  View,
-  useColorScheme,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { SplashScreen, Tabs } from "expo-router";
+import { useEffect, useState } from "react";
+import { StatusBar, useColorScheme, View } from "react-native";
 import "../global.css";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FixturesScreen from "./fixture";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import AsyncStorage, {
-  useAsyncStorage,
-} from "@react-native-async-storage/async-storage";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -76,16 +72,17 @@ function RootLayoutNav() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
-          <SafeAreaView>
-            <StatusBar
-              barStyle={
-                colorScheme === "dark" ? "light-content" : "dark-content"
-              }
-            />
-            <FixturesScreen cachedFixtures={cachedFixtures} />
-          </SafeAreaView>
-        </View>
+        <Tabs>
+          <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
+            <SafeAreaView>
+              <StatusBar
+                barStyle={colorScheme === "dark"
+                  ? "light-content"
+                  : "dark-content"}
+              />
+            </SafeAreaView>
+          </View>
+        </Tabs>
       </ThemeProvider>
     </QueryClientProvider>
   );

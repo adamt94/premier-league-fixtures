@@ -1,6 +1,6 @@
 import { gameWeekSchedule } from "../constants/gameWeekSchedule";
 
-export const formatDate = (dateString: string): string => {
+export const formatDate = (dateString: number): string => {
   const daysOfWeek = [
     "Sunday",
     "Monday",
@@ -36,8 +36,8 @@ export const formatDate = (dateString: string): string => {
 };
 
 export const isSameDay = (
-  dateString1: string,
-  dateString2: string
+  dateString1: number,
+  dateString2: number,
 ): boolean => {
   const date1 = new Date(dateString1);
   const date2 = new Date(dateString2);
@@ -49,8 +49,7 @@ export const isSameDay = (
   );
 };
 
-
-export const getHoursMins = (dateString: string): string => {
+export const getHoursMins = (dateString: number): string => {
   const date = new Date(dateString);
   const hours = date.getHours().toString().padStart(2, "0");
   const minutes = date.getMinutes().toString().padStart(2, "0");
@@ -62,10 +61,8 @@ const stripTimeFromDate = (date: Date) => {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 };
 
-export const findCurrentGameWeek = (dateStrings: string[]): number => {
-  const dates: Date[] = dateStrings.map((dateString) =>
-    stripTimeFromDate(new Date(dateString))
-  );
+export const findCurrentGameWeek = (dateStrings: number[]): number => {
+  const dates: Date[] = dateStrings.map((dateString) => new Date(dateString));
   const currentDate: Date = new Date();
   for (let i = 0; i < dates.length; i++) {
     if (dates[i] >= currentDate) {

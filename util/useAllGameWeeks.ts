@@ -1,43 +1,38 @@
 import { useEffect, useState } from "react";
-import { gameWeekSchedule } from "../constants/gameWeekSchedule";
 import { findCurrentGameWeek, getFixtureGameWeekIndex } from "./dateFormat";
+import { Fixture } from "../api/types";
 
 type GameWeek = {
   totalGameweeks: number;
-  fixturesByGameWeeks: Fixture[][];
+  fixturesByGameWeeks: Map<number, Fixture[]>;
   currentGameWeek: number;
 };
 
 const useAllGameWeeks = (fixtures: Fixture[]): GameWeek => {
-  const [totalGameweeks, setTotalGameweeks] = useState<number>(0);
-  const [fixturesByGameWeeks, setFixturesByGameWeeks] = useState<Fixture[][]>(
-    []
+  const [totalGameweeks, setTotalGameweeks] = useState<number>(
+    fixtures[0].gameweek.competitionPhase.gameweekRange[1],
   );
-  const [currentGameWeek, setCurrentGameWeek] = useState<number>(-1);
+  const [fixturesByGameWeeks, setFixturesByGameWeeks] = useState<
+    Map<number, Fixture[]>
+  >(new Map());
+  const [currentGameWeek, setCurrentGameWeek] = useState<number>(0);
 
   useEffect(() => {
-    const sortedFixtures = fixtures.sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-    );
+    const gameWeeks: Map<number, Fixture[]> = new Map();
 
-    const gameWeeks: Fixture[][] = [];
-
-    sortedFixtures.forEach((fixture) => {
-      const gameWeekIndex = getFixtureGameWeekIndex(fixture.date);
-      if (!gameWeeks[gameWeekIndex]) {
-        gameWeeks[gameWeekIndex] = [];
-      }
-      gameWeeks[gameWeekIndex].push(fixture);
-    });
-
-    const gameWeekDates: string[] = gameWeeks.map((week) => {
-      return week[0].date;
-    });
-
-    const currentGameWeek = findCurrentGameWeek(gameWeekDates);
-    setTotalGameweeks(gameWeeks.length);
+    for (let i = 0; i < fixtures.length; i++) {
+      const fixturesGameWeek = fixtures[i].gameweek.gameweek as number;
+      const currentItems = gameWeeks.get(fixturesGameWeek) || [];
+      currentItems.push(fixtures[i]);
+      gameWeeks.set(fixturesGameWeek, currentItems);
+    }
     setFixturesByGameWeeks(gameWeeks);
-    setCurrentGameWeek(currentGameWeek);
+  }, [fixtures, totalGameweeks]);
+
+  useEffect(() => {
+    const datesStrings = fixtures.map((fixture) => fixture.kickoff.millis);
+    const currentGameWeek = findCurrentGameWeek(datesStrings);
+    setCurrentGameWeek(fixtures[currentGameWeek].gameweek.gameweek as number);
   }, [fixtures]);
 
   return { totalGameweeks, fixturesByGameWeeks, currentGameWeek };
