@@ -1,5 +1,3 @@
-import { gameWeekSchedule } from "../constants/gameWeekSchedule";
-
 export const formatDate = (dateString: number): string => {
   const daysOfWeek = [
     "Sunday",
@@ -70,36 +68,4 @@ export const findCurrentGameWeek = (dateStrings: number[]): number => {
     }
   }
   return dates.length > 0 ? dates.length - 1 : 0;
-};
-
-export const getFixtureGameWeekIndex = (inputDate: string): number => {
-  const parsedInputDate = new Date(inputDate);
-
-  // Check if the input date is before the first date in the array
-  if (parsedInputDate < new Date(gameWeekSchedule[0])) {
-    return 0;
-  }
-
-  // Check if the input date is after the last date in the array
-  if (
-    parsedInputDate > new Date(gameWeekSchedule[gameWeekSchedule.length - 1])
-  ) {
-    return gameWeekSchedule.length - 1;
-  }
-
-  // Iterate through the array to find the index of the input date
-  for (let i = 0; i < gameWeekSchedule.length; i++) {
-    const currentDate = new Date(gameWeekSchedule[i]);
-
-    // If the input date is equal to or after the current date, continue
-    if (parsedInputDate >= currentDate) {
-      continue;
-    }
-
-    // If the input date is before the current date, return the previous index
-    return i - 1;
-  }
-
-  // If the input date is not found (unlikely in this case), return -1
-  return -1;
 };

@@ -202,3 +202,120 @@ export type FootballTablesData = {
   dynamicallyGenerated: boolean;
   tables: [{ entries: Entry[]; gameWeek: number }];
 };
+
+/// FIXTURE DETAILS TYPES ///
+
+type MatchOfficial = {
+  matchOfficialId: number;
+  role: string;
+  birth: {};
+  name: {
+    display: string;
+    first: string;
+    last: string;
+  };
+  id: number;
+};
+
+export type Player = {
+  matchPosition: string;
+  matchShirtNumber: number;
+  captain: boolean;
+  playerId: number;
+  info: {
+    position: string;
+    shirtNum: number;
+    positionInfo: string;
+  };
+  nationalTeam: {
+    isoCode: string;
+    country: string;
+    demonym: string;
+  };
+  birth: {
+    date: {
+      millis: number;
+      label: string;
+    };
+    country: {
+      isoCode: string;
+      country: string;
+      demonym: string;
+    };
+    place: string;
+  };
+  age: string;
+  name: {
+    display: string;
+    first: string;
+    last: string;
+  };
+  id: number;
+  altIds: {
+    opta: string;
+  };
+};
+
+export type TeamList = {
+  teamId: number;
+  lineup: Player[];
+  formation: {
+    label: string;
+    players: number[][];
+  };
+};
+
+type Event = {
+  clock: {
+    secs: number;
+    label: string;
+  };
+  phase: string;
+  type: string;
+  time: {
+    millis: number;
+    label: string;
+  };
+  score: {
+    homeScore: number;
+    awayScore: number;
+  };
+  id?: number;
+  personId?: number;
+  teamId?: number;
+  assistId?: number;
+  description?: string;
+};
+
+export type FootballFixtureDetailsData = {
+  gameweek: Gameweek;
+  kickoff: Kickoff;
+  provisionalKickoff: Kickoff;
+  teams: [{ team: Team; score: number }, { team: Team; score: number }];
+  replay: boolean;
+  ground: Ground;
+  neutralGround: boolean;
+  status: string;
+  phase: string;
+  outcome: string;
+  clock: {
+    secs: number;
+    label: string;
+  };
+  fixtureType: string;
+  extraTime: boolean;
+  shootout: boolean;
+  matchOfficials: MatchOfficial[];
+  halfTimeScore: {
+    homeScore: number;
+    awayScore: number;
+  };
+  teamLists: TeamList[];
+  events: Event[];
+  penaltyShootouts: any[]; // You can define a type for penaltyShootouts if needed
+  behindClosedDoors: boolean;
+  id: number;
+  altIds: {
+    opta: string;
+  };
+};

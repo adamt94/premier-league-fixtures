@@ -1,15 +1,10 @@
 import { ActivityIndicator, useColorScheme } from "react-native";
-import { Text, View } from "../components/Themed";
+import { View } from "../../components/Themed";
 import { RefreshControl, ScrollView } from "react-native";
-import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-import { getFixtures } from "../api/getFixtures";
-import { Entry, FootballFixtureData, FootballTablesData } from "../api/types";
-import { Stack, Tabs } from "expo-router";
-import Table, { TableTeam } from "../components/Table";
-import { getTable } from "../api/getTable";
-import { Ionicons } from "@expo/vector-icons";
+import { Entry, FootballTablesData } from "../../api/types";
+import Table, { TableTeam } from "../../components/Table";
+import { getTable } from "../../api/getTable";
 
 const fetchTableData = () => {
   return getTable();
@@ -20,12 +15,11 @@ export default function FixturesScreen({
 }: {
   cachedFixtures?: ApiFixture;
 }) {
-  const { isLoading, data, isRefetching, refetch } = useQuery<
-    FootballTablesData | null
-  >({
-    queryKey: ["tables"],
-    queryFn: fetchTableData,
-  });
+  const { isLoading, data, isRefetching, refetch } =
+    useQuery<FootballTablesData | null>({
+      queryKey: ["tables"],
+      queryFn: fetchTableData,
+    });
 
   const convertToTableData = (data: FootballTablesData) => {
     const entries: Entry[] = data.tables[0].entries;
@@ -38,8 +32,8 @@ export default function FixturesScreen({
         draws: team.overall.drawn,
         losses: team.overall.lost,
         points: team.overall.points,
-        icon:
-          `https://resources.premierleague.com/premierleague/badges/70/${team.team.altIds.opta}.png`,
+        startingPosition: team.startingPosition,
+        icon: `https://resources.premierleague.com/premierleague/badges/70/${team.team.altIds.opta}.png`,
       };
     }) as TableTeam[];
   };
@@ -54,12 +48,6 @@ export default function FixturesScreen({
 
   return (
     <View className="flex pt-12">
-      <Tabs.Screen
-        options={{
-          headerShown: false,
-          tabBarIcon: () => <Ionicons name="albums" size={30} color="white" />,
-        }}
-      />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={

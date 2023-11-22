@@ -50,19 +50,19 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
 
               <View className="w-full">
                 {fixturesByGameWeeks.get(index + 1).map((item, gindex) => {
-                  const previousFixture = gindex > 0
-                    ? fixturesByGameWeeks.get(index + 1)
-                    : null;
+                  const previousFixture =
+                    gindex > 0 ? fixturesByGameWeeks.get(index + 1) : null;
                   const sameDay = Boolean(
                     previousFixture &&
-                      isSameDay(
-                        previousFixture[gindex - 1].kickoff.millis,
-                        item.kickoff.millis,
-                      ),
+                    isSameDay(
+                      previousFixture[gindex - 1].kickoff.millis,
+                      item.kickoff.millis,
+                    ),
                   );
 
                   return (
                     <Fixture
+                      id={item.id}
                       key={gindex}
                       date={item.kickoff.millis}
                       showDate={!sameDay}
@@ -71,12 +71,8 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
                       awayTeam={item.teams[1].team.shortName}
                       homeScore={item.teams[0].score || 0}
                       awayScore={item.teams[1].score || 0}
-                      homeTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
-                        item.teams[0].team.altIds.opta
-                      }.png`}
-                      awayTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
-                        item.teams[1].team.altIds.opta
-                      }.png`}
+                      homeTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${item.teams[0].team.altIds.opta}.png`}
+                      awayTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${item.teams[1].team.altIds.opta}.png`}
                     />
                   );
                 })}

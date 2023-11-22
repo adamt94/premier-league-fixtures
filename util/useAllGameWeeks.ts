@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { findCurrentGameWeek, getFixtureGameWeekIndex } from "./dateFormat";
+import { findCurrentGameWeek } from "./dateFormat";
 import { Fixture } from "../api/types";
 
 type GameWeek = {

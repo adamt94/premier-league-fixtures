@@ -5,15 +5,18 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Tabs } from "expo-router";
-import { useEffect, useState } from "react";
-import { StatusBar, useColorScheme, View } from "react-native";
+import { Slot, SplashScreen, Stack, Tabs } from "expo-router";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
 import "../global.css";
-import { SafeAreaView } from "react-native-safe-area-context";
-import FixturesScreen from "./fixture";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
+import { QueryClient } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import resolveConfig from "tailwindcss/resolveConfig";
+import { Ionicons } from "@expo/vector-icons";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 
+const myConfig = require("../tailwind.config.js");
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -26,6 +29,11 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+const queryClient = new QueryClient();
+
+const asyncStoragePersistor = createAsyncStoragePersister({
+  storage: AsyncStorage,
+});
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -53,37 +61,14 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-  const queryClient = new QueryClient();
-  const { getItem } = useAsyncStorage("@fixtures");
-  const [cachedFixtures, setCachedFixtures] = useState<
-    ApiFixture | undefined
-  >();
-
-  useEffect(() => {
-    const getFixtures = async () => {
-      const fixtures = await getItem();
-
-      if (fixtures) {
-        setCachedFixtures(JSON.parse(fixtures));
-      }
-    };
-    getFixtures();
-  }, []);
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider
+      client={queryClient}
+      persistOptions={{ persister: asyncStoragePersistor }}
+    >
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Tabs>
-          <View className="bg-surfaceContainer dark:bg-surfaceContainerDark">
-            <SafeAreaView>
-              <StatusBar
-                barStyle={colorScheme === "dark"
-                  ? "light-content"
-                  : "dark-content"}
-              />
-            </SafeAreaView>
-          </View>
-        </Tabs>
+        <Stack />
       </ThemeProvider>
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 }
