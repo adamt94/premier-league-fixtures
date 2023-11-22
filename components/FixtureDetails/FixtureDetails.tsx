@@ -3,6 +3,7 @@ import { Team, TeamList } from "../../api/types";
 import { Image, Text, View } from "react-native";
 import { teamLogoSrc } from "../../constants/variables";
 import Header from "./Header";
+import { ScrollView } from "react-native-gesture-handler";
 
 type FixtureDetailsScreenProps = {
   theme: { textColor: string; backgroundColor: string; borderColor: string };
@@ -13,6 +14,7 @@ type FixtureDetailsScreenProps = {
   };
   teamLineUps: TeamList[];
   teams: [{ team: Team; score: number }, { team: Team; score: number }];
+  competition: string;
 };
 
 export default function FixtureDetailsScreen({
@@ -20,6 +22,7 @@ export default function FixtureDetailsScreen({
   awayTheme,
   teamLineUps,
   teams,
+  competition,
 }: FixtureDetailsScreenProps) {
   const homeTeamLineUp = teamLineUps[0];
   const awayTeamLineUp = teamLineUps[1];
@@ -37,7 +40,7 @@ export default function FixtureDetailsScreen({
           awayTeamLogo={awayTeamLogo}
           homeTeamName={homeTeam.shortName}
           awayTeamName={awayTeam.shortName}
-          league=""
+          league={competition}
           date=""
           showScore={teams[0].score && teams[1].score}
           homeScore={teams[0].score}
@@ -47,60 +50,64 @@ export default function FixtureDetailsScreen({
     );
   }
   return (
-    <View className="flex flex-col justify-center">
-      <Header
-        homeTeamLogo={homeTeamLogo}
-        awayTeamLogo={awayTeamLogo}
-        homeTeamName={homeTeam.shortName}
-        awayTeamName={awayTeam.shortName}
-        league=""
-        date=""
-        showScore={true}
-        homeScore={teams[0].score}
-        awayScore={teams[1].score}
-      />
+    <ScrollView>
+      <View className="flex flex-col justify-center">
+        <Header
+          homeTeamLogo={homeTeamLogo}
+          awayTeamLogo={awayTeamLogo}
+          homeTeamName={homeTeam.shortName}
+          awayTeamName={awayTeam.shortName}
+          league={competition}
+          date=""
+          showScore={true}
+          homeScore={teams[0].score}
+          awayScore={teams[1].score}
+        />
 
-      <View className="w-full h-10">
-        <View className="flex flex-row justify-between items-center w-full h-full bg-secondaryContainer dark:bg-secondaryContainerDark px-4">
-          <Image
-            className=""
-            source={{ uri: teamLogoSrc + homeTeam.altIds.opta + ".png" ?? "" }}
-            style={{ width: 25, height: 25 }}
-          />
+        <View className="w-full h-10">
+          <View className="flex flex-row justify-between items-center w-full h-full bg-secondaryContainer dark:bg-secondaryContainerDark px-4">
+            <Image
+              className=""
+              source={{
+                uri: teamLogoSrc + homeTeam.altIds.opta + ".png" ?? "",
+              }}
+              style={{ width: 25, height: 25 }}
+            />
 
-          <Text className="text-lg text-onSecondaryContainer dark:text-onSecondaryContainerDark">
-            {homeTeam.shortName}
-          </Text>
-          <Text className="text-sm text-onSecondaryContainer dark:text-onSecondaryContainerDark">
-            {homeTeamLineUp.formation.label ?? ""}
-          </Text>
+            <Text className="text-lg text-onSecondaryContainer dark:text-onSecondaryContainerDark">
+              {homeTeam.shortName}
+            </Text>
+            <Text className="text-sm text-onSecondaryContainer dark:text-onSecondaryContainerDark">
+              {homeTeamLineUp.formation.label ?? ""}
+            </Text>
+          </View>
+        </View>
+        <LineUpGraphic
+          theme={theme}
+          awayTheme={awayTheme}
+          homeTeamLineUp={homeTeamLineUp}
+          awayTeamLineUp={awayTeamLineUp}
+        />
+
+        <View className="w-full h-10">
+          <View className="flex flex-row justify-between items-center w-full h-full bg-tertiaryContainer dark:bg-tertiaryContainerDark px-4">
+            <Image
+              className=""
+              source={{
+                uri: teamLogoSrc + awayTeam.altIds.opta + ".png" ?? "",
+              }}
+              style={{ width: 25, height: 25 }}
+            />
+
+            <Text className="text-lg text-onTertiaryContainer dark:text-onTertiaryContainerDark">
+              {awayTeam.shortName}
+            </Text>
+            <Text className="text-sm text-onTertiaryContainer dark:text-onTertiaryContainerDark">
+              {awayTeamLineUp.formation.label ?? ""}
+            </Text>
+          </View>
         </View>
       </View>
-      <LineUpGraphic
-        theme={theme}
-        awayTheme={awayTheme}
-        homeTeamLineUp={homeTeamLineUp}
-        awayTeamLineUp={awayTeamLineUp}
-      />
-
-      <View className="w-full h-10">
-        <View className="flex flex-row justify-between items-center w-full h-full bg-tertiaryContainer dark:bg-tertiaryContainerDark px-4">
-          <Image
-            className=""
-            source={{
-              uri: teamLogoSrc + awayTeam.altIds.opta + ".png" ?? "",
-            }}
-            style={{ width: 25, height: 25 }}
-          />
-
-          <Text className="text-lg text-onTertiaryContainer dark:text-onTertiaryContainerDark">
-            {awayTeam.shortName}
-          </Text>
-          <Text className="text-sm text-onTertiaryContainer dark:text-onTertiaryContainerDark">
-            {awayTeamLineUp.formation.label ?? ""}
-          </Text>
-        </View>
-      </View>
-    </View>
+    </ScrollView>
   );
 }

@@ -20,11 +20,17 @@ const Header = ({
   homeScore,
   awayScore,
   showScore = false,
+  league,
 }: HeaderProps) => {
   return (
     <View className="flex flex-col items-center justify-center">
-      <View className="flex flex-row w-full justify-evenly">
-        <View className="flex flex-col justify-between items-center p-4 gap-2">
+      <View className="w-full px-2">
+        <Text className="text-lg text-tertiary dark:text-tertiaryDark text-left">
+          {league}
+        </Text>
+      </View>
+      <View className="flex flex-row w-full justify-evenly items-center">
+        <View className="flex flex-col  items-center p-4 gap-2 w-1/3">
           <Image
             className=""
             source={{ uri: homeTeamLogo }}
@@ -55,13 +61,13 @@ const Header = ({
             </View>
           )}
         </View>
-        <View className="flex flex-col justify-between items-center p-4 gap-2">
+        <View className="flex flex-col items-center p-4 gap-2 w-1/3">
           <Image
             className=""
             source={{ uri: awayTeamLogo }}
             style={{ width: 45, height: 45 }}
           />
-          <Text className="text-lg text-onSurface dark:text-onSurfaceDark">
+          <Text className="text-lg text-center text-onSurface dark:text-onSurfaceDark">
             {awayTeamName}
           </Text>
         </View>
