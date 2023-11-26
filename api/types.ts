@@ -259,13 +259,14 @@ export type Player = {
 export type TeamList = {
   teamId: number;
   lineup: Player[];
+  substitutes: Player[];
   formation: {
     label: string;
     players: number[][];
   };
 };
 
-type Event = {
+export type Event = {
   clock: {
     secs: number;
     label: string;

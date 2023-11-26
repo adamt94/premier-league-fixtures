@@ -19,6 +19,8 @@ export default function FixturesScreen({
     useQuery<FootballFixtureData | null>({
       queryKey: ["fixtures"],
       queryFn: fetchFixturesSortByDate,
+      staleTime: 0,
+      enabled: false,
     });
 
   if (isLoading || !data) {

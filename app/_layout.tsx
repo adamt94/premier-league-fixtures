@@ -5,18 +5,15 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Slot, SplashScreen, Stack, Tabs } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import "../global.css";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { QueryClient } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import resolveConfig from "tailwindcss/resolveConfig";
-import { Ionicons } from "@expo/vector-icons";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 
-const myConfig = require("../tailwind.config.js");
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,

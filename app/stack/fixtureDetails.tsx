@@ -75,6 +75,7 @@ export default function FixtureDetails() {
           teamLineUps={lineUps}
           teams={data.teams}
           competition={data.gameweek.compSeason.competition.description}
+          events={data.events}
         />
       </View>
     </>

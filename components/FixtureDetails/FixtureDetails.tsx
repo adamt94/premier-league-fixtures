@@ -1,9 +1,10 @@
 import LineUpGraphic from "./LineUpGraphic";
-import { Team, TeamList } from "../../api/types";
+import { Event, Team, TeamList } from "../../api/types";
 import { Image, Text, View } from "react-native";
 import { teamLogoSrc } from "../../constants/variables";
 import Header from "./Header";
 import { ScrollView } from "react-native-gesture-handler";
+import Goals from "./Goals";
 
 type FixtureDetailsScreenProps = {
   theme: { textColor: string; backgroundColor: string; borderColor: string };
@@ -15,6 +16,7 @@ type FixtureDetailsScreenProps = {
   teamLineUps: TeamList[];
   teams: [{ team: Team; score: number }, { team: Team; score: number }];
   competition: string;
+  events: Event[];
 };
 
 export default function FixtureDetailsScreen({
@@ -23,6 +25,7 @@ export default function FixtureDetailsScreen({
   teamLineUps,
   teams,
   competition,
+  events,
 }: FixtureDetailsScreenProps) {
   const homeTeamLineUp = teamLineUps[0];
   const awayTeamLineUp = teamLineUps[1];
@@ -30,7 +33,6 @@ export default function FixtureDetailsScreen({
   const awayTeam = teams[1].team;
   const homeTeamLogo = teamLogoSrc + homeTeam.altIds.opta + ".png";
   const awayTeamLogo = teamLogoSrc + awayTeam.altIds.opta + ".png";
-  console.log(homeTeamLineUp);
 
   if (!homeTeamLineUp || !awayTeamLineUp) {
     return (
@@ -63,6 +65,13 @@ export default function FixtureDetailsScreen({
           homeScore={teams[0].score}
           awayScore={teams[1].score}
         />
+        <Goals
+          homeTeamPlayers={homeTeamLineUp.lineup}
+          awayTeamPlayers={awayTeamLineUp.lineup}
+          homeTeamSubs={homeTeamLineUp.substitutes}
+          awayTeamSubs={awayTeamLineUp.substitutes}
+          events={events}
+        />
 
         <View className="w-full h-10">
           <View className="flex flex-row justify-between items-center w-full h-full bg-secondaryContainer dark:bg-secondaryContainerDark px-4">
@@ -78,7 +87,7 @@ export default function FixtureDetailsScreen({
               {homeTeam.shortName}
             </Text>
             <Text className="text-sm text-onSecondaryContainer dark:text-onSecondaryContainerDark">
-              {homeTeamLineUp.formation.label ?? ""}
+              {homeTeamLineUp.formation?.label ?? ""}
             </Text>
           </View>
         </View>
@@ -103,7 +112,7 @@ export default function FixtureDetailsScreen({
               {awayTeam.shortName}
             </Text>
             <Text className="text-sm text-onTertiaryContainer dark:text-onTertiaryContainerDark">
-              {awayTeamLineUp.formation.label ?? ""}
+              {awayTeamLineUp.formation?.label ?? ""}
             </Text>
           </View>
         </View>
