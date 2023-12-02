@@ -9,7 +9,6 @@ const headers = {
 export async function getFixtures(): Promise<FootballFixtureData | null> {
   try {
     const response = await fetch(url, { method: "GET", headers });
-
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

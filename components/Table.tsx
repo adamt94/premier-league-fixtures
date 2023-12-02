@@ -81,7 +81,7 @@ const Table = ({ teams }: TableProps) => {
         </Text>
       </View>
       {teams.map((team, index) => (
-        <>
+        <View className="flex w-full items-center" key={index}>
           <View key={index} className="flex-row text-center p-2 px-0">
             <Text className="text-onSurfaceVariant dark:text-onSurfaceDark w-1/12 text-center">
               {team.position}
@@ -119,7 +119,7 @@ const Table = ({ teams }: TableProps) => {
             <View className="border-errorContainer dark:border-errorContainerDark border border-1 w-full">
             </View>
           )}
-        </>
+        </View>
       ))}
     </View>
   );

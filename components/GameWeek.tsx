@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Dimensions, Text, View } from "react-native";
-import { formatDate, isSameDay } from "../util/dateFormat";
+import { isSameDay } from "../util/dateFormat";
 import useAllGameWeeks from "../util/useAllGameWeeks";
 import Carousel from "react-native-reanimated-carousel";
 import { Fixture as FixtureType } from "../api/types";
@@ -35,7 +35,7 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
         activeOffsetX: [-10, 10],
       }}
       windowSize={10}
-      defaultIndex={currentGameWeek}
+      defaultIndex={currentGameWeek - 1}
       autoPlay={false}
       data={[...new Array(totalGameweeks).keys()]}
       scrollAnimationDuration={1000}
@@ -50,14 +50,15 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
 
               <View className="w-full">
                 {fixturesByGameWeeks.get(index + 1).map((item, gindex) => {
-                  const previousFixture =
-                    gindex > 0 ? fixturesByGameWeeks.get(index + 1) : null;
+                  const previousFixture = gindex > 0
+                    ? fixturesByGameWeeks.get(index + 1)
+                    : null;
                   const sameDay = Boolean(
                     previousFixture &&
-                    isSameDay(
-                      previousFixture[gindex - 1].kickoff.millis,
-                      item.kickoff.millis,
-                    ),
+                      isSameDay(
+                        previousFixture[gindex - 1].kickoff.millis,
+                        item.kickoff.millis,
+                      ),
                   );
 
                   return (
@@ -71,8 +72,12 @@ export const GameWeek = ({ fixtures }: GameWeekProps) => {
                       awayTeam={item.teams[1].team.shortName}
                       homeScore={item.teams[0].score || 0}
                       awayScore={item.teams[1].score || 0}
-                      homeTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${item.teams[0].team.altIds.opta}.png`}
-                      awayTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${item.teams[1].team.altIds.opta}.png`}
+                      homeTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
+                        item.teams[0].team.altIds.opta
+                      }.png`}
+                      awayTeamLogo={`https://resources.premierleague.com/premierleague/badges/70/${
+                        item.teams[1].team.altIds.opta
+                      }.png`}
                     />
                   );
                 })}

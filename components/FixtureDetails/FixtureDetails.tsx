@@ -34,6 +34,11 @@ export default function FixtureDetailsScreen({
   const homeTeamLogo = teamLogoSrc + homeTeam.altIds.opta + ".png";
   const awayTeamLogo = teamLogoSrc + awayTeam.altIds.opta + ".png";
 
+  const goals = events.filter(
+    (event) => event.type === "G" || event.type === "P",
+  );
+  const goalsPersonIds = goals.map((event) => event.personId || 0);
+
   if (!homeTeamLineUp || !awayTeamLineUp) {
     return (
       <View>
@@ -96,6 +101,7 @@ export default function FixtureDetailsScreen({
           awayTheme={awayTheme}
           homeTeamLineUp={homeTeamLineUp}
           awayTeamLineUp={awayTeamLineUp}
+          goals={goalsPersonIds}
         />
 
         <View className="w-full h-10">

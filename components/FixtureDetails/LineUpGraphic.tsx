@@ -1,7 +1,6 @@
 import { Dimensions, View } from "react-native";
 import FootballPitch from "../svg/FootballPitch";
 import LineUpPlayer from "./LineUpPlayer";
-import { Text } from "../Themed";
 import { Player, TeamList } from "../../api/types";
 
 type Theme = {
@@ -14,16 +13,21 @@ type LineUpGraphicProps = {
   awayTheme?: Theme;
   homeTeamLineUp?: TeamList;
   awayTeamLineUp?: TeamList;
+  goals?: number[];
+  assists?: string[];
+  yellowCards?: string[];
+  redCards?: string[];
 };
 
 type CreatePlayersProps = {
   theme: Theme;
   players: Player[];
+  goals?: number[];
 };
 
 const deviceWidth = Dimensions.get("window").width;
 
-const CreatePlayers = ({ theme, players }: CreatePlayersProps) => {
+const CreatePlayers = ({ theme, players, goals }: CreatePlayersProps) => {
   return (
     <View className="flex flex-row justify-center m-auto">
       {players.map((player) => {
@@ -33,6 +37,8 @@ const CreatePlayers = ({ theme, players }: CreatePlayersProps) => {
             "." +
             displayName.split(" ")[1];
         }
+
+        const playerGoal = goals?.filter((goal) => goal === player.id);
         return (
           <LineUpPlayer
             playerName={displayName}
@@ -43,7 +49,7 @@ const CreatePlayers = ({ theme, players }: CreatePlayersProps) => {
             subbed={false}
             yellowCard={false}
             redCard={false}
-            goal={false}
+            goal={(playerGoal?.length || 0) > 0}
           />
         );
       })}
@@ -56,6 +62,7 @@ export default function LineUpGraphic({
   awayTheme = theme,
   homeTeamLineUp,
   awayTeamLineUp,
+  goals,
 }: LineUpGraphicProps) {
   if (!homeTeamLineUp || !awayTeamLineUp) {
     return null;
@@ -99,18 +106,34 @@ export default function LineUpGraphic({
       <FootballPitch backgroundColor="#34a853" strokeColor="#79c388" />
       <View className="absolute top-0 left-0  w-full">
         <View className="flex flex-col ">
-          <CreatePlayers theme={theme} players={goalkeeper} />
-          <CreatePlayers theme={theme} players={defenders} />
-          <CreatePlayers theme={theme} players={midfielders} />
-          <CreatePlayers theme={theme} players={strikers} />
+          <CreatePlayers theme={theme} players={goalkeeper} goals={goals} />
+          <CreatePlayers theme={theme} players={defenders} goals={goals} />
+          <CreatePlayers theme={theme} players={midfielders} goals={goals} />
+          <CreatePlayers theme={theme} players={strikers} goals={goals} />
         </View>
       </View>
       <View className="absolute bottom-0 left-0  w-full ">
         <View className="flex flex-col ">
-          <CreatePlayers theme={awayTheme} players={awayStrikers} />
-          <CreatePlayers theme={awayTheme} players={awayMidfielders} />
-          <CreatePlayers theme={awayTheme} players={awayDefenders} />
-          <CreatePlayers theme={awayTheme} players={awayGoalkeeper} />
+          <CreatePlayers
+            theme={awayTheme}
+            players={awayStrikers}
+            goals={goals}
+          />
+          <CreatePlayers
+            theme={awayTheme}
+            players={awayMidfielders}
+            goals={goals}
+          />
+          <CreatePlayers
+            theme={awayTheme}
+            players={awayDefenders}
+            goals={goals}
+          />
+          <CreatePlayers
+            theme={awayTheme}
+            players={awayGoalkeeper}
+            goals={goals}
+          />
         </View>
       </View>
     </View>

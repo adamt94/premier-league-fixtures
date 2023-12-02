@@ -61,10 +61,12 @@ const stripTimeFromDate = (date: Date) => {
 
 export const findCurrentGameWeek = (dateStrings: number[]): number => {
   const dates: Date[] = dateStrings.map((dateString) => new Date(dateString));
+
   const currentDate: Date = new Date();
   for (let i = 0; i < dates.length; i++) {
-    if (dates[i] >= currentDate) {
-      return i == 0 ? 0 : i - 1;
+    if (currentDate <= dates[i]) {
+      console.log(dates[i]);
+      return i == 0 ? 0 : i;
     }
   }
   return dates.length > 0 ? dates.length - 1 : 0;

@@ -15,13 +15,18 @@ export default function FixturesScreen({
 }: {
   cachedFixtures?: ApiFixture;
 }) {
-  const { isLoading, data, isRefetching, refetch } =
-    useQuery<FootballFixtureData | null>({
-      queryKey: ["fixtures"],
-      queryFn: fetchFixturesSortByDate,
-      staleTime: 0,
-      enabled: false,
-    });
+  const { isLoading, data, isRefetching, refetch } = useQuery<
+    FootballFixtureData | null
+  >({
+    queryKey: ["fixtures"],
+    queryFn: fetchFixturesSortByDate,
+    staleTime: 0,
+    enabled: false,
+  });
+
+  if (!isLoading && !data && !isRefetching) {
+    refetch();
+  }
 
   if (isLoading || !data) {
     return (

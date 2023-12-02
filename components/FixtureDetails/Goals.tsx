@@ -1,4 +1,4 @@
-import { Image, Text, View } from "react-native";
+import { Image, Text, useColorScheme, View } from "react-native";
 import { Event, Player } from "../../api/types";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -16,16 +16,18 @@ const Goals = ({
   awayTeamSubs,
   events,
 }: HeaderProps) => {
+  const colorscheme = useColorScheme();
+
   const findPlayerAndTeam = (id: number) => {
     const findPlayer = (players: Player[], team: number) => {
       const player = players.find((p) => p.id === id);
       return player ? { player, team } : null;
     };
 
-    const homePlayer =
-      findPlayer(homeTeamPlayers, 0) || findPlayer(homeTeamSubs, 0);
-    const awayPlayer =
-      findPlayer(awayTeamPlayers, 1) || findPlayer(awayTeamSubs, 1);
+    const homePlayer = findPlayer(homeTeamPlayers, 0) ||
+      findPlayer(homeTeamSubs, 0);
+    const awayPlayer = findPlayer(awayTeamPlayers, 1) ||
+      findPlayer(awayTeamSubs, 1);
 
     return homePlayer || awayPlayer || null;
   };
@@ -53,7 +55,11 @@ const Goals = ({
           <Text className="text-sm text-onSurface dark:text-onSurfaceDark flex-1">
             {scorer.team === 0 ? scorer.player.name.display : ""}
           </Text>
-          <Ionicons name="football" size={20} color="white" />
+          <Ionicons
+            name="football"
+            size={20}
+            color={colorscheme === "light" ? "black" : "white"}
+          />
           <Text className="text-sm text-onSurface dark:text-onSurfaceDark flex-1 text-right">
             {scorer.team === 1 ? scorer.player.name.display : ""}
           </Text>
