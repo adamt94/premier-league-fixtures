@@ -10,6 +10,7 @@ type HeaderProps = {
   date: string;
   league: string;
   showScore?: boolean;
+  clock?: string;
 };
 
 const Header = ({
@@ -21,13 +22,19 @@ const Header = ({
   awayScore,
   showScore = false,
   league,
+  clock,
 }: HeaderProps) => {
   return (
     <View className="flex flex-col items-center justify-center">
-      <View className="w-full px-2">
+      <View className="flex flex-row justify-between w-full p-2">
         <Text className="text-lg text-tertiary dark:text-tertiaryDark text-left">
           {league}
         </Text>
+        <View className="bg-tertiaryContainer p-1 px-3 rounded-full">
+          <Text className="text-sm text-on text-onTertiaryContainer dark:text-onTertiaryContainerDark text-left">
+            {clock?.replace(/0{2}$/, "")}
+          </Text>
+        </View>
       </View>
       <View className="flex flex-row w-full justify-evenly items-center">
         <View className="flex flex-col  items-center p-4 gap-2 w-1/3">

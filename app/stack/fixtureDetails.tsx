@@ -17,12 +17,13 @@ export default function FixtureDetails() {
 
   const colorScheme = useColorScheme();
 
-  const { isLoading, data, isRefetching, refetch } =
-    useQuery<FootballFixtureDetailsData | null>({
-      queryKey: ["fixtureDetailsS", id],
-      staleTime: 0,
-      queryFn: () => fetchFixturesSortByDate(id as string),
-    });
+  const { isLoading, data, isRefetching, refetch } = useQuery<
+    FootballFixtureDetailsData | null
+  >({
+    queryKey: ["fixtureDetailsS", id],
+    staleTime: 0,
+    queryFn: () => fetchFixturesSortByDate(id as string),
+  });
 
   if (isLoading || !data) {
     return (
@@ -33,8 +34,7 @@ export default function FixtureDetails() {
   }
 
   const lineUps = data.teamLists;
-  const title =
-    data.teams[0].team.club.shortName +
+  const title = data.teams[0].team.club.shortName +
     " vs " +
     data.teams[1].team.club.shortName;
 
@@ -45,37 +45,32 @@ export default function FixtureDetails() {
       <View className="w-full h-full surface relative bg-surfaceContainer dark:bg-surfaceContainerDark">
         <FixtureDetailsScreen
           theme={{
-            textColor:
-              colorScheme === "light"
-                ? theme.colors.onPrimaryFixedVariant
-                : theme.colors.onPrimaryFixedVariantDark,
-            borderColor:
-              colorScheme === "light"
-                ? theme.colors.onPrimaryFixedVariant
-                : theme.colors.onPrimaryFixedVariantDark,
-            backgroundColor:
-              colorScheme === "light"
-                ? theme.colors.primaryFixed
-                : theme.colors.primaryFixedDark,
+            textColor: colorScheme === "light"
+              ? theme.colors.onPrimaryFixedVariant
+              : theme.colors.onPrimaryFixedVariantDark,
+            borderColor: colorScheme === "light"
+              ? theme.colors.onPrimaryFixedVariant
+              : theme.colors.onPrimaryFixedVariantDark,
+            backgroundColor: colorScheme === "light"
+              ? theme.colors.primaryFixed
+              : theme.colors.primaryFixedDark,
           }}
           awayTheme={{
-            textColor:
-              colorScheme === "light"
-                ? theme.colors.onTertiaryFixedVariant
-                : theme.colors.onTertiaryFixedVariantDark,
-            borderColor:
-              colorScheme === "light"
-                ? theme.colors.onTertiaryFixedVariant
-                : theme.colors.onTertiaryFixedVariantDark,
-            backgroundColor:
-              colorScheme === "light"
-                ? theme.colors.tertiaryFixed
-                : theme.colors.tertiaryFixedDark,
+            textColor: colorScheme === "light"
+              ? theme.colors.onTertiaryFixedVariant
+              : theme.colors.onTertiaryFixedVariantDark,
+            borderColor: colorScheme === "light"
+              ? theme.colors.onTertiaryFixedVariant
+              : theme.colors.onTertiaryFixedVariantDark,
+            backgroundColor: colorScheme === "light"
+              ? theme.colors.tertiaryFixed
+              : theme.colors.tertiaryFixedDark,
           }}
           teamLineUps={lineUps}
           teams={data.teams}
           competition={data.gameweek.compSeason.competition.description}
           events={data.events}
+          clock={data.clock.label}
         />
       </View>
     </>

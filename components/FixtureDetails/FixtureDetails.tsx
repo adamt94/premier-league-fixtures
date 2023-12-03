@@ -17,6 +17,7 @@ type FixtureDetailsScreenProps = {
   teams: [{ team: Team; score: number }, { team: Team; score: number }];
   competition: string;
   events: Event[];
+  clock?: string;
 };
 
 export default function FixtureDetailsScreen({
@@ -26,6 +27,7 @@ export default function FixtureDetailsScreen({
   teams,
   competition,
   events,
+  clock,
 }: FixtureDetailsScreenProps) {
   const homeTeamLineUp = teamLineUps[0];
   const awayTeamLineUp = teamLineUps[1];
@@ -49,6 +51,7 @@ export default function FixtureDetailsScreen({
           awayTeamName={awayTeam.shortName}
           league={competition}
           date=""
+          clock={clock}
           showScore={teams[0].score && teams[1].score}
           homeScore={teams[0].score}
           awayScore={teams[1].score}
@@ -66,6 +69,7 @@ export default function FixtureDetailsScreen({
           awayTeamName={awayTeam.shortName}
           league={competition}
           date=""
+          clock={clock}
           showScore={true}
           homeScore={teams[0].score}
           awayScore={teams[1].score}
